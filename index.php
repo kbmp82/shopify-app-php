@@ -10,9 +10,13 @@ $shopify = new Shopify();
 $query="SELECT * FROM shops WHERE shop_url ='". $_GET['shop']. "' LIMIT 1";
 $result = $mysql->query($query) or die($mysql->error);
 
-if($result->num_rows < 1){
+function installApp(){
     header("Location: install.php?shop=" . $_GET["shop"]);
     exit();
+}
+
+if($result->num_rows < 1){
+   installApp();
 }
 
 //Use fetch assoc function to get the records
@@ -28,4 +32,9 @@ echo "<br>" . $shopify->get_token();
 $products = $shopify->rest_api("/admin/api/2023-07/products.json", array(), "GET");
 
 echo print_r($products["body"]);
+
+$response = json_decode($products["body"], true);
+if(array_key_exists("errors",$response)){
+    installApp();
+}
 ?>
