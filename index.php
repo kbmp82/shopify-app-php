@@ -11,5 +11,21 @@ $shopify = new Shopify();
 
 require_once("includes/check_token.php");
 
-echo "homepage";
 ?>
+
+<?php include_once("components/header.php"); ?>
+    <section>
+        <div class="columns twelve">
+            <div class="card">
+                <div class="alert">
+                    <dl>
+                        <dt>
+                            <p>Welcome to Elana!</p>
+                        </dt>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<?php include_once("components/footer.php"); ?>
