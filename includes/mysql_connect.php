@@ -1,5 +1,5 @@
 <?php
-require_once("./vendor/autoload.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/elana/vendor/autoload.php");
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();

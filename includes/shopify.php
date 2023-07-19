@@ -59,6 +59,7 @@ class Shopify {
         if($error) {
             return $error_msg;
         }else{
+            
             //split response into 2 arrays
             $response = preg_split("/\r\n\r\n|\n\n|\r\r/", $response, 2);
           
@@ -79,7 +80,28 @@ class Shopify {
         }
         curl_close($curl);
 
-        return array("headers" => $headers, "body" => $response[1]);
+        $response_arr = array("headers" => $headers, "body" => $response[1]);
+        $response_arr_body = json_decode($response_arr["body"], true);
+
+        //check if API token is valid, if not redirect to install.php
+        if(array_key_exists("errors",$response_arr_body)){
+
+           // get parent directory only
+           if(str_contains($response_arr_body["errors"], "Invalid API key or access token")){
+          
+                $parent = dirname($_SERVER['REQUEST_URI']);
+                $parent = explode("/", $parent)[1];
+                header("Location: /$parent/install.php?shop=" . $_GET["shop"]);
+                exit();
+           }else{
+                print_r($response_arr_body);
+                exit();
+           }
+         
+        }else{
+            return $response_arr;
+        }
+        
     }
 }
 ?>
